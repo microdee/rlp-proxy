@@ -6,7 +6,6 @@ import { APIOutput } from './types';
 const app = express();
 
 const port = Number(process.env.PORT || 8080);
-const SERVER_URL = process.env.SERVER_URL;
 
 const sendResponse = (res: Response, output: APIOutput | null) => {
   if (!output) {
@@ -40,6 +39,7 @@ app.get('/', async (req, res) => {
 app.get('/v2', async (req, res) => {
   try {
     let url = req.query.url as unknown as string;
+    let host = req.query.host as unknown as string;
     url = url.toLowerCase();
     url = url.indexOf('://') === -1 ? 'http://' + url : url;
 
@@ -70,7 +70,7 @@ app.get('/v2', async (req, res) => {
         ? og.image
         : images.length > 0
         ? images[0].url
-        : `${SERVER_URL}/img-placeholder.jpg`;
+        : `${host}/img-placeholder.jpg`;
       const description = og.description
         ? og.description
         : meta.description
@@ -93,7 +93,7 @@ app.get('/v2', async (req, res) => {
     console.log(error);
     return res.set('Access-Control-Allow-Origin', '*').status(500).json({
       error:
-        'Internal server error. Please open a Github issue or contact me on Twitter @dhaiwat10 if the issue persists.',
+        'Internal server error.',
     });
   }
 });
