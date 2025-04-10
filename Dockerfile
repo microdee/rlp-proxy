@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install the application dependencies
-RUN npm install; npm build
+RUN npm install; npm run build
 
 # Define the entry point for the container
 CMD ["npm", "start"]
